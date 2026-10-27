@@ -37,8 +37,18 @@ class PromoCodeResource extends Resource
                     ->minValue(0),
                 Forms\Components\DateTimePicker::make('valid_until')
                     ->required(),
-                Forms\Components\Toggle::make('is_used')
-                    ->required(),
+                Forms\Components\TextInput::make('max_usage')
+                    ->label('Maks. Penggunaan')
+                    ->required()
+                    ->numeric()
+                    ->default(10)
+                    ->minValue(1),
+                Forms\Components\TextInput::make('usage_count')
+                    ->label('Sudah Dipakai')
+                    ->numeric()
+                    ->default(0)
+                    ->disabled()
+                    ->dehydrated(false),
             ]);
     }
 
@@ -53,7 +63,14 @@ class PromoCodeResource extends Resource
                     'fixed' => 'Rp ' . number_format($record->discount, 0, ',', '.'),
                     'percentage' => $record->discount. '%',
                     }),
-                Tables\Columns\ToggleColumn:: make('is_used'),
+                Tables\Columns\TextColumn::make('usage_count')
+                    ->label('Pemakaian')
+                    ->formatStateUsing(fn(PromoCode $record): string => $record->usage_count . ' / ' . $record->max_usage)
+                    ->color(fn(PromoCode $record): string => $record->isExpired() ? 'danger' : 'success'),
+                Tables\Columns\IconColumn::make('is_expired')
+                    ->label('Habis')
+                    ->getStateUsing(fn(PromoCode $record): bool => $record->isExpired())
+                    ->boolean(),
             ])
             ->filters([
                 //
@@ -61,6 +78,15 @@ class PromoCodeResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('reset')
+                    ->label('Reset')
+                    ->icon('heroicon-o-arrow-path')
+                    ->color('warning')
+                    ->requiresConfirmation()
+                    ->modalHeading('Reset penggunaan promo?')
+                    ->modalDescription(fn(PromoCode $record): string => "Promo \"{$record->code}\" telah dipakai {$record->usage_count}x. Reset ke 0?")
+                    ->action(fn(PromoCode $record) => $record->resetUsage())
+                    ->visible(fn(PromoCode $record): bool => $record->usage_count > 0),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

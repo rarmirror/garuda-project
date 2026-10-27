@@ -11,19 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hotel', function (Blueprint $table) 
+        Schema::create('hotel_rooms', function (Blueprint $table)
         {
             $table->id();
+            $table->foreignId('hotel_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('slug')->unique();
-            $table->string('city');
-            $table->string('address');
-            $table->string('country')->default('Indonesia');
-            $table->tinyInteger('star_rating')->default(3); // 1-5 bintang
+            $table->string('type'); // standard, deluxe, suite, presidential
+            $table->integer('price_per_night');
+            $table->integer('capacity');
+            $table->integer('total_rooms');
             $table->text('description')->nullable();
             $table->string('image')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('email')->nullable();
             $table->boolean('is_available')->default(true);
             $table->softDeletes();
             $table->timestamps();

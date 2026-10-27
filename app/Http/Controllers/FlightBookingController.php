@@ -142,7 +142,7 @@ class FlightBookingController extends Controller
 
         if ($request->filled('promo_code')) {
             $promoCode = PromoCode::where('code', $request->promo_code)
-                ->where('is_used', false)
+                ->whereColumn('usage_count', '<', 'max_usage')
                 ->where('valid_until', '>=', now())
                 ->first();
 
@@ -181,7 +181,7 @@ class FlightBookingController extends Controller
             }
 
             if ($promoCode) {
-                $promoCode->update(['is_used' => true]);
+                $promoCode->increment('usage_count');
             }
 
             return $trx;
