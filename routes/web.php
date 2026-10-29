@@ -55,4 +55,5 @@ Route::post('/hotel-booking/callback', [HotelBookingController::class, 'callback
 // My Hotel Booking
 Route::get('/my-booking/hotel', [MyBookingController::class, 'hotelSearch'])->name('my-booking.hotel.search');
 Route::post('/my-booking/hotel', [MyBookingController::class, 'hotelResult'])->name('my-booking.hotel.result');
+Route::get('/my-booking/hotel/{booking}/download', [MyBookingController::class, 'downloadHotelPdf'])->name('my-booking.hotel.download');
 Route::post('/my-booking/hotel/{booking}/cancel', [MyBookingController::class, 'cancelHotel'])->name('my-booking.hotel.cancel');

@@ -109,6 +109,21 @@ class MyBookingController extends Controller
         return view('my-booking.hotel-result', compact('booking'));
     }
 
+    public function downloadHotelPdf(\App\Models\HotelBooking $booking)
+    {
+        $booking->load([
+            'hotel',
+            'room',
+            'guests',
+            'promo',
+        ]);
+
+        $pdf = Pdf::loadView('my-booking.hotel-voucher-pdf', compact('booking'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download("E-Voucher-Hotel-{$booking->code}.pdf");
+    }
+
     public function cancelHotel(\App\Models\HotelBooking $booking)
     {
         if ($booking->payment_status === 'paid') {
