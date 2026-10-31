@@ -84,18 +84,33 @@
                         };
                     @endphp
 
+                    @php
+                        // Gambar kabin default per kelas (Unsplash, bebas pakai)
+                        $cabinImages = [
+                            'economy'      => 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?w=800&q=80',
+                            'business'     => 'https://images.unsplash.com/photo-1540339832862-474599807836?w=800&q=80',
+                            'presidential' => 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
+                        ];
+                        $cabinImg = $cabinImages[$class->class_type] ?? $cabinImages['economy'];
+                    @endphp
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                        {{-- Color Header --}}
-                        <div class="bg-gradient-to-r {{ $colors['bg'] }} px-6 py-4 flex items-center justify-between">
-                            <div>
-                                <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full capitalize">
-                                    {{ $class->class_type }} Class
-                                </span>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-white/80 text-xs">Harga per orang</div>
-                                <div class="text-white text-2xl font-extrabold">
-                                    Rp {{ number_format($class->price, 0, ',', '.') }}
+                        {{-- Cabin Image + Overlay Header --}}
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="{{ $cabinImg }}"
+                                 alt="Kabin {{ $class->class_type }}"
+                                 class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-r {{ $colors['bg'] }} opacity-75"></div>
+                            <div class="absolute inset-0 px-6 py-4 flex items-center justify-between">
+                                <div>
+                                    <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full capitalize">
+                                        {{ $class->class_type }} Class
+                                    </span>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-white/80 text-xs">Harga per orang</div>
+                                    <div class="text-white text-2xl font-extrabold">
+                                        Rp {{ number_format($class->price, 0, ',', '.') }}
+                                    </div>
                                 </div>
                             </div>
                         </div>

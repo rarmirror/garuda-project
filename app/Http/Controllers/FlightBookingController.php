@@ -255,6 +255,13 @@ class FlightBookingController extends Controller
             return redirect()->route('home')->with('error', 'Sesi pembayaran tidak ditemukan.');
         }
 
+        $transaction->load([
+            'flight.airline',
+            'flight.segments' => fn($q) => $q->orderBy('sequence'),
+            'flight.segments.airport',
+            'flightClass',
+        ]);
+
         return view('flights.payment', compact('transaction', 'snapToken'));
     }
     public function success(Transaction $transaction)

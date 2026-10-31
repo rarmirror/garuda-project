@@ -21,9 +21,27 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
                     <h3 class="font-bold text-gray-700 text-sm mb-4">Ringkasan Booking</h3>
 
+                    @php
+                        $roomImg  = $booking->room->image ?? null;
+                        $hotelImg = $booking->hotel->image ?? null;
+                        $imgSrc   = $roomImg ?? $hotelImg;
+                        $imgUrl   = $imgSrc
+                            ? (\Illuminate\Support\Str::startsWith($imgSrc, ['http://', 'https://'])
+                                ? $imgSrc
+                                : asset('storage/' . ltrim($imgSrc, '/')))
+                            : null;
+                    @endphp
                     <div class="flex gap-3 mb-4 pb-4 border-b border-gray-50">
-                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-2xl flex-shrink-0">
-                            🏨
+                        <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
+                            @if ($imgUrl)
+                                <img src="{{ $imgUrl }}"
+                                     alt="{{ $booking->hotel->name }}"
+                                     class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-2xl">
+                                    🏨
+                                </div>
+                            @endif
                         </div>
                         <div>
                             <div class="font-bold text-sm text-gray-800">{{ $booking->hotel->name }}</div>
