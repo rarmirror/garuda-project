@@ -57,3 +57,8 @@ Route::get('/my-booking/hotel', [MyBookingController::class, 'hotelSearch'])->na
 Route::post('/my-booking/hotel', [MyBookingController::class, 'hotelResult'])->name('my-booking.hotel.result');
 Route::get('/my-booking/hotel/{booking}/download', [MyBookingController::class, 'downloadHotelPdf'])->name('my-booking.hotel.download');
 Route::post('/my-booking/hotel/{booking}/cancel', [MyBookingController::class, 'cancelHotel'])->name('my-booking.hotel.cancel');
+
+// Admin report exports (protected by the authenticated admin session).
+Route::get('/admin/reports/export', ReportExportController::class)
+    ->middleware(['web', 'auth'])
+    ->name('admin.reports.export');
