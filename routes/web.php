@@ -10,6 +10,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\HotelBookingController;
+use App\Http\Controllers\Admin\ReportExportController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/flights', [FlightSearchController::class, 'index'])->name('flights.search');
