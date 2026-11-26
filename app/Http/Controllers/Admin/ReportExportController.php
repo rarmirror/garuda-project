@@ -1,12 +1,12 @@
 <?php
 
-namespace App\\Http\\Controllers\\Admin;
+namespace App\Http\Controllers\Admin;
 
-use App\\Http\\Controllers\\Controller;
-use App\\Models\\HotelBooking;
-use App\\Models\\Transaction;
-use Illuminate\\Http\\Request;
-use Symfony\\Component\\HttpFoundation\\StreamedResponse;
+use App\Http\Controllers\Controller;
+use App\Models\HotelBooking;
+use App\Models\Transaction;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ReportExportController extends Controller
 {
