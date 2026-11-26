@@ -1,10 +1,10 @@
 <?php
 
-namespace App\\Filament\\Pages;
+namespace App\Filament\Pages;
 
-use App\\Models\\HotelBooking;
-use App\\Models\\Transaction;
-use Filament\\Pages\\Page;
+use App\Models\HotelBooking;
+use App\Models\Transaction;
+use Filament\Pages\Page;
 
 class Reports extends Page
 {
